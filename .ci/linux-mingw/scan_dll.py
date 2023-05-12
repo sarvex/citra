@@ -62,7 +62,7 @@ def parse_imports_recursive(file_name, path_list=[]):
     full_list = []
     while q.qsize():
         current = q.get_nowait()
-        print('> %s' % current)
+        print(f'> {current}')
         deps = parse_imports(current)
         # if this dll does not have any import, ignore it
         if not deps:
@@ -97,7 +97,7 @@ def deploy(name, dst, dry_run=False):
         if not dry_run:
             shutil.copy(dll_entry, dst)
         else:
-            print('[Dry-Run] Copy %s to %s' % (dll_entry, dst))
+            print(f'[Dry-Run] Copy {dll_entry} to {dst}')
     print('Deploy completed.')
     return dlls_path
 
@@ -109,7 +109,7 @@ def main():
     to_deploy = sys.argv[1:-1]
     tgt_dir = sys.argv[-1]
     if not os.path.isdir(tgt_dir):
-        print('%s is not a directory.' % tgt_dir)
+        print(f'{tgt_dir} is not a directory.')
         return 1
     print('Scanning dependencies...')
     deploy(to_deploy, tgt_dir)

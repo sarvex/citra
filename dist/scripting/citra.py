@@ -48,9 +48,9 @@ class Citra:
             self.socket.sendto(request, (self.address, CITRA_PORT))
 
             raw_reply = self.socket.recv(MAX_PACKET_SIZE)
-            reply_data = self._read_and_validate_header(raw_reply, request_id, RequestType.ReadMemory)
-
-            if reply_data:
+            if reply_data := self._read_and_validate_header(
+                raw_reply, request_id, RequestType.ReadMemory
+            ):
                 result += reply_data
                 read_size -= len(reply_data)
                 read_address += len(reply_data)
@@ -82,7 +82,7 @@ class Citra:
             raw_reply = self.socket.recv(MAX_PACKET_SIZE)
             reply_data = self._read_and_validate_header(raw_reply, request_id, RequestType.WriteMemory)
 
-            if None != reply_data:
+            if reply_data != None:
                 write_address += temp_write_size
                 write_size -= temp_write_size
                 write_contents = write_contents[temp_write_size:]
@@ -90,6 +90,6 @@ class Citra:
                 return False
         return True
 
-if "__main__" == __name__:
+if __name__ == "__main__":
     import doctest
     doctest.testmod(extraglobs={'c': Citra()})
